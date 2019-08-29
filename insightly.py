@@ -2,9 +2,11 @@
 # -*- coding: UTF-8 -*-
 #
 #
-# Python client library for v2.1/v2.2 Insightly API
+# Python client library for v2.1/v2.2/v3.1 Insightly API
 # Supports both Python v2.7 and 3.x
 # Brian McConnell <brian@insight.ly>
+# Update to version 3.1 by  
+# Tyson Cung <tyson.cung@vgw.co>
 #
 import os
 import base64
@@ -67,8 +69,7 @@ def encode_query(text):
 
 class Insightly():
     """
-    Insightly Python library for Insightly API v2.2
-    Brian McConnell <brian@insight.ly>
+    Insightly Python library for Insightly API v3.1
    
     This library provides user friendly access to the versions 2.2 of the REST API for Insightly. The library provides several services, including:
    
@@ -79,13 +80,9 @@ class Insightly():
     environments, including Google App Engine). The wrapper functions return native Python objects, typically dictionaries, or lists of
     dictionaries, so working with them is easily done using built in functions.
     
-    The version 2.2 API adds several new endpoints which make it easy to make incremental changes to existing Insightly objects, such
-    as to add a phone number to a contact, and also more closely mirrors the functionality available in the web app (such as the
-    ability to follow and unfollow objects.s)
-    
     API DOCUMENTATION
     
-    Full API documentation and an interactive sandbox is available at https://api.insight.ly/v2.2/Help
+    Full API documentation and an interactive sandbox is available at https://api.insightly.com/v3.1/Help
     
     IMPORTANT NOTE
     
@@ -172,7 +169,7 @@ class Insightly():
     
     Use Python's built in help() function to pull up documentation for individual methods.
     
-    For API documentation and interactive sandbox, go to https://api.insight.ly/v2.2/Help
+    For API documentation and interactive sandbox, go to https://api.insight.ly/v3.1/Help
     
     TROUBLESHOOTING TIPS
     
@@ -277,7 +274,7 @@ class Insightly():
         version = str(version)
         self.version = version
         self.swagger = None
-        if version == '2.2' or version == '2.1' or version == 'mobile':
+        if version == '2.2' or version == '3.1' or version == 'mobile':
             self.alt_header = 'Basic '
             self.apikey = apikey
             self.tests_run = 0
@@ -295,11 +292,11 @@ class Insightly():
                                                                        u.get('EMAIL_DROPBOX_IDENTIFIER', ''))
                     if self.debug:        print('The account owner is ' + self.owner_name + ' [' + str(self.owner_id) + '] at ' + self.owner_email)
                     break
-            if offline and self.version == '2.2':
+            if offline and self.version == '3.1':
                 self.sync(refresh=refresh)
                 # add more object types once contacts are debugged
         else:
-            raise Exception('Python library only supports v2.1 or v2.2 APIs. We recommend using v2.2.')
+            raise Exception('Python library only supports v3.1 or v2.2 APIs. We recommend using v3.1.')
         
     def check_difference(self, new, old):
         """
@@ -685,7 +682,7 @@ class Insightly():
         Iterates through the entire recordset for an object type, optionally filtered by updated_after_utc,
         returns a list of object IDs if ids_only is True
         """
-        if self.version == '2.2':
+        if self.version == '3.1':
             done = False
             skip = 0
             top = 500
@@ -732,7 +729,7 @@ class Insightly():
                     done = True
             return results
         else:
-            raise Exception('get_all() is only supported for version 2.2 and mobile APIs')
+            raise Exception('get_all() is only supported for version 3.1 and mobile APIs')
     
     def getMethods(self, test=False):
         """
